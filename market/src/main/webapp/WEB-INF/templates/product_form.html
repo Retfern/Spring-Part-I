@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Spring MVC GeekApp</title>
+</head>
+<body>
+<!--/*@thymesVar id="student" type="com.geekbrains.entities.Student"*/-->
+<form th:action="@{/products/process_form}" th:object="${product}" method="POST">
+    <input th:field="*{id}" type="hidden"/>
+    Name: <input th:field="*{name}"/>
+    <br>
+    Price: <input th:field="*{price}"/>
+    <br>
+    Country:
+    <select th:field="*{country}">
+        <option value="Russia" th:text="Russia" label="Russia" />
+        <option value="France" th:text="France" label="France" />
+        <option value="Russia" th:text="Russia" label="China" />
+    </select>
+    <br>
+    Company:
+    <br>
+
+    <!--/*@thymesVar id="pLanguages" type="java.util.List<java.lang.String>"*/-->
+    <input th:each="pLang : ${companyList}" type="checkbox" th:field="*{company}" th:text="${pLang}" th:value="${pLang}" />
+
+    <br>
+    Description:
+    <br>
+    <textarea  rows = "20" cols = "80" th:field = "*{description}" ></textarea>
+    <br>
+    <input type="submit" value="Submit" />
+</form>
+<a th:href="@{/}">на Главную страницу</a>
+</body>
+</html>
