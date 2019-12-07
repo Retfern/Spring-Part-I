@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Product Filter</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>Заготовка магазина</h1>
+
+    <h3>Фильтр</h3>
+<form th:action="@{/products/filter_param}" th:object="${productFilter}" method="POST">
+    <div class="col-md-4 mb-3">
+    Min Price: <input th:field="*{minPrice}"/>
+    <br>
+    Max Price: <input th:field="*{maxPrice}"/>
+    <br>
+    Company:
+    <br>
+    <input th:each="pLang : ${companyList}" type="checkbox" th:field="*{companies}" th:text="${pLang}" th:value="${pLang}" />
+
+    <br>
+    Country:
+    <br>
+    <input th:each="pLang : ${countryList}" type="checkbox" th:field="*{countries}" th:text="${pLang}" th:value="${pLang}" />
+    <br>
+
+    <select th:field="*{category}">
+        <option th:text="'Not selected'" th:value="null"/>
+        <option th:each="c : ${categoryList}" th:text="${c}" th:selected="${c==productFilter.getCategory()}" th:value="${c}"/>
+    </select>
+    <br>
+    Sorting:
+    <br>
+    <input th:each="pLang : ${sortingList}" type="radio" th:field="*{sorting}" th:text="${pLang}" th:value="${pLang}" />
+    <br>
+    </div>
+    <input class="btn btn-warning" type="submit" value="Submit" />
+    <a class="btn btn-warning" th:href="@{'/products/filter'}">Сбросить фильтр</a>
+</form>
+<br>
+<span th:text="'Total products count (filtered): ' + ${productCount}" />
+<br>
+    <h1>Каталог продуктов</h1>
+    <table  class="table table-hover" th:if="${product.size() > 0}">
+        <thead>
+        <tr>
+            <td>id</td>
+            <td>title</td>
+            <td>price</td>
+            <td>company</td>
+            <td>country</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="i : ${product}">
+            <td th:text="${i.id}" />
+            <td th:text="${i.title}" />
+            <td th:text="${i.price}" />
+            <td th:text="${i.company.getName()}" />
+            <td th:text="${i.company.getCountry().getName()}" />
+        </tr>
+        </tbody>
+    </table>
+
+<br>
+<a th:href="@{/}">на Главную страницу</a>
+</div>
+</body>
+</html>
