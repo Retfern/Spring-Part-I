@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Корзина</title>
+    <link rel="stylesheet" th:href="@{css/stylesheet.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Корзина</h1>
+    <h3>Список товаров в корзине</h3>
+
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Описание товара</th>
+            <th>Цена</th>
+            <th>Редактирование</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<com.geekbrains.marketdemoa.entites.Item>"*/-->
+        <!--/*@thymesVar id="item" type="com.geekbrains.marketdemoa.entites.Item"*/-->
+        <tr th:each="item : ${basket.keySet()}">
+            <td th:text="${item.id}"/>
+            <td>
+                <span style="font-weight: bold" th:text="${item.title}"/>
+                <br>
+                <span th:text="${item.description}"/>
+            </td>
+            <td th:text="${item.price}"/>
+            <td>
+                <form th:action="@{/basket_update/}" method="GET">
+                    <input th:value="${item.id}" name="id" type="hidden"/>
+                    <input class="form-control" name="sum"  th:value="${basket.get(item)}" type="number"
+                           placeholder="Количество"/>
+                    <button type="submit" class="btn btn-warning">Update</button>
+                </form>
+                <a th:href="@{'/basket_delete/' + ${item.id}}" class="btn btn-warning">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table table-hover">
+        <tr>
+            <td>
+                <b>Всего к оплате:</b>
+                <span th:text="${priceOrder}"/>
+            </td>
+            <td>
+                <a th:href="@{/order_pay}" class="btn btn-warning">Оплатить</a>
+            </td>
+        </tr>
+    </table>
+    <a class="page-link" th:href="@{/}">На главную страницу</a>
+</div>
+</body>
+</html>
